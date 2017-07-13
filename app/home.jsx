@@ -12,8 +12,9 @@ class Home extends React.Component {
       		showDetails: 'hide',
       		showHeaders: 'hide',
       		officerIsSelected: false,
-      		selectedOfficer: ''
-    	},
+      		selectedOfficer: '',
+      		officerObject: []
+      	},
     	this.handleTypeChange = this.handleTypeChange.bind(this);
     	this.handleStateChange = this.handleStateChange.bind(this);
     	this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,27 +27,36 @@ class Home extends React.Component {
 	handleTypeChange(event) {
 		if (event.target.value != undefined) {
 			this.setState({type: event.target.value});
+			this.resetDetails();
 		}
   	}
   	// Handle change of select with state 
   	handleStateChange(event) {
 		if (event.target.value != undefined) {
 			this.setState({state: event.target.value});
+			this.resetDetails();
 		}
   	}
+  	resetDetails() {
+  		this.setState({showHeaders:'hide', showDetails:'hide'})
+  	}
   	handleOfficerSelect(index, event) {
-  		console.log(index);
+  		//console.log(index);
   		event.preventDefault();
   		if (index != undefined) {
-  			//this.setState({selectedOfficer:event.currentTarget.dataset['index']})
-  			this.setState({showDetails:'show', officerIsSelected:true, selectedOfficer:index})
+  			let officersList = this.state.officers,
+  				selectedOfficer = index,
+  				activeOfficer;
+	  			activeOfficer = officersList[selectedOfficer];
+  			this.setState({showDetails:'show', officerIsSelected:true, selectedOfficer:index, officerObject:activeOfficer})
+  			//console.log(this.state.officerObject);
   		}
   	}
 
   	// handle submit of form
   	handleSubmit(event) {
   		event.preventDefault();
-  		console.log(event.target.officer.value, event.target.state.value);
+  		//console.log(event.target.officer.value, event.target.state.value);
     	if (event.target.officer.value === "" || event.target.state.value === "") {
     		if (event.target.officer.value === "") {
 	    		alert('Please select an officer type');
@@ -162,15 +172,13 @@ class Home extends React.Component {
 	    		</table>
 			</div>
 			<div className={"officersDetailList " + this.state.showDetails}>
-				<h2>Info</h2>
-					{this.state.officers.map((officer, index) => (
-						<ul key={index}>
-		    				<li>{officer.name}</li>
-		    				<li>{officer.district}</li>
-		    				<li>{officer.phone}</li>
-		    				<li>{officer.office}</li>
-		    			</ul>
-					))}
+				<h2 className="big">Info</h2>
+					<ul>
+	    				<li>Name: <span className="bold">{this.state.officerObject.name}</span></li>
+	    				<li>District: <span className="bold">{this.state.officerObject.district ? this.state.officerObject.district : "n/a"}</span></li>
+	    				<li>Phone: <span className="bold">{this.state.officerObject.phone}</span></li>
+	    				<li>Address: <span className="bold">{this.state.officerObject.office}</span></li>
+	    			</ul>
 			</div>
 		</div>
     </div>

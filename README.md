@@ -8,6 +8,13 @@ Super simple api to get results from http://whoismyrepresentative.com/api
 * Run `npm start`
 * Enjoy immensely.
 
+
+##Running locally
+
+* View app on http://localhost:8080/public/
+* Node server runs concurrently on http://localhost:3000/
+
+
 ###Available endpoints: 
 
 `/representatives/:state`
